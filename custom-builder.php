@@ -86,12 +86,13 @@ if (isset($_GET['edit_id'])) {
     $res_b = $stmt->get_result();
     
     if ($res_b && $row_b = $res_b->fetch_assoc()) {
+        // FIXED: Tinanggal ang sumobrang ] sa dulo ng ram_quantity array line
         $edit_data = [
             'edit_id' => $edit_id,
             'build_name' => $row_b['name'],
             'total_price' => $row_b['total_price'],
             'parts' => [],
-            'ram_quantity' => 1]
+            'ram_quantity' => 1
         ];
         
         $items_stmt = $conn->prepare("SELECT component_id, quantity FROM build_items WHERE build_id = ?");
@@ -101,7 +102,6 @@ if (isset($_GET['edit_id'])) {
         
         while ($row_i = $res_i->fetch_assoc()) {
             $edit_data['parts'][] = intval($row_i['component_id']);
-            
         }
     }
 }
@@ -145,7 +145,6 @@ if (isset($_GET['edit_id'])) {
             border-color: #add8e6 !important;
             box-shadow: 0 0 0 0.25rem rgba(173, 216, 230, 0.25) !important;
         }
-        /* Custom selector styling para sa RAM quantity box */
         .qty-selector {
             background-color: #121212 !important;
             color: #ffffff !important;
@@ -248,7 +247,6 @@ const allComponents = <?php
 
 const editModeData = <?php echo $edit_data ? json_encode($edit_data) : 'null'; ?>;
 
-// Kunin din ang mga items pati quantity mula sa build kung nag-e-edit
 const rawBuildItems = <?php 
     if (isset($_GET['edit_id'])) {
         $id = intval($_GET['edit_id']);
@@ -351,7 +349,6 @@ function renderCurrentStep() {
     document.getElementById('prevBtn').disabled = currentStepIdx === 0;
     document.getElementById('nextBtn').disabled = !userSelection.parts[currentCategory];
     
-    // FIX UI: Lilitaw lang ang RAM multiplier module selector box kung kasalukuyang nasa RAM choice index step ang user
     if (currentCategory === "RAM") {
         document.getElementById('ramQtyContainer').style.display = 'block';
     } else {
@@ -493,7 +490,7 @@ async function commitBuildToDatabase() {
         build_name: nameInput,
         total_price: totalPrice,
         parts: userSelection.parts,
-        ram_quantity: userSelection.ram_quantity, // Isama sa JSON data package patungong backend
+        ram_quantity: userSelection.ram_quantity,
         edit_id: editModeData ? editModeData.edit_id : 0 
     };
 
