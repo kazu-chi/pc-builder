@@ -155,7 +155,6 @@ document.getElementById('aiForm').addEventListener('submit', async function(e) {
         const response = await fetch('https://pc-builder-ai-1.onrender.com/generate-build', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            // Isinama ang 'strategy' sa JSON payload para mabasang mabuti ng Python backend algorithm mo
             body: JSON.stringify({ budget, strategy, purpose, era, parts: dbParts })
         });
 
